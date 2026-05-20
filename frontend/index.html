@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainSentinel — AI Smart Contract Security</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">🛡️</span>
+                <span class="logo-text">ChainSentinel</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link active" data-tab="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-tab="analyze">Analyze</a>
+                <a href="#" class="nav-link" data-tab="batch">Batch Scan</a>
+                <a href="#" class="nav-link" data-tab="chat">AI Assistant</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="token-badge">
+                <span class="token-icon">⚡</span>
+                <span class="token-count" id="tokenCount">0</span>
+                <span class="token-label">tokens today</span>
+            </div>
+            <div class="status-dot" id="statusDot"></div>
+        </div>
+    </header>
+
+    <!-- Dashboard Tab -->
+    <section class="tab-content active" id="tab-dashboard">
+        <div class="dashboard">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value" id="statTokens">0</div>
+                    <div class="stat-label">Tokens Consumed</div>
+                    <div class="stat-bar"><div class="stat-bar-fill" id="tokenBar"></div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="statCalls">0</div>
+                    <div class="stat-label">API Calls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔍</div>
+                    <div class="stat-value" id="statAnalyses">0</div>
+                    <div class="stat-label">Contracts Audited</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value" id="statUptime">0m</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+
+            <!-- Agent Breakdown -->
+            <div class="panel">
+                <h3 class="panel-title">🤖 Multi-Agent Pipeline</h3>
+                <div class="agents-grid">
+                    <div class="agent-card">
+                        <div class="agent-icon">🐛</div>
+                        <div class="agent-name">Vulnerability Scanner</div>
+                        <div class="agent-desc">Reentrancy, overflow, access control, oracle manipulation</div>
+                        <div class="agent-tokens" id="agentVuln">0 tokens</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-icon">⛽</div>
+                        <div class="agent-name">Gas Optimizer</div>
+                        <div class="agent-desc">Storage layout, loop optimization, assembly opportunities</div>
+                        <div class="agent-tokens" id="agentGas">0 tokens</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-icon">🧠</div>
+                        <div class="agent-name">Logic Auditor</div>
+                        <div class="agent-desc">MEV vectors, price manipulation, governance attacks</div>
+                        <div class="agent-tokens" id="agentLogic">0 tokens</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-icon">📝</div>
+                        <div class="agent-name">Report Generator</div>
+                        <div class="agent-desc">Professional audit report with severity ratings</div>
+                        <div class="agent-tokens" id="agentReport">0 tokens</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Usage Chart -->
+            <div class="panel">
+                <h3 class="panel-title">📈 Token Usage Trend</h3>
+                <div class="chart-container" id="tokenChart">
+                    <div class="chart-bars" id="chartBars"></div>
+                    <div class="chart-labels" id="chartLabels"></div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="panel">
+                <h3 class="panel-title">📋 Activity Log</h3>
+                <div class="log-container" id="activityLog">
+                    <div class="log-empty">No activity yet — analyze a contract to see the pipeline in action</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analyze Tab -->
+    <section class="tab-content" id="tab-analyze">
+        <div class="analyze-container">
+            <div class="analyze-input">
+                <div class="panel">
+                    <h3 class="panel-title">📝 Smart Contract Input</h3>
+                    <div class="input-meta">
+                        <input type="text" id="contractName" placeholder="Contract name (optional)" class="text-input">
+                        <select id="networkSelect" class="select-input">
+                            <option value="ethereum">Ethereum</option>
+                            <option value="base">Base</option>
+                            <option value="arbitrum">Arbitrum</option>
+                            <option value="polygon">Polygon</option>
+                            <option value="bsc">BSC</option>
+                        </select>
+                    </div>
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <span class="editor-dot red"></span>
+                            <span class="editor-dot yellow"></span>
+                            <span class="editor-dot green"></span>
+                            <span class="editor-filename">contract.sol</span>
+                        </div>
+                        <textarea id="codeInput" spellcheck="false" placeholder="// Paste your Solidity contract here...
+// Or load an example below
+
+pragma solidity ^0.8.19;
+
+contract Example {
+    // Your contract code...
+}"></textarea>
+                    </div>
+                    <div class="action-bar">
+                        <button class="btn btn-primary" id="btnAnalyze">
+                            <span class="btn-icon">🔍</span>
+                            Run Full Audit
+                        </button>
+                        <button class="btn btn-secondary" id="btnLoadExample">
+                            Load Example
+                        </button>
+                        <div class="token-estimate" id="tokenEstimate">
+                            Est. ~0 tokens
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="analyze-results" id="resultsPanel">
+                <div class="panel">
+                    <h3 class="panel-title">📊 Analysis Results</h3>
+                    <div class="results-empty" id="resultsEmpty">
+                        <div class="results-empty-icon">🛡️</div>
+                        <p>Paste a contract and click "Run Full Audit" to start the multi-agent analysis pipeline</p>
+                    </div>
+                    <div class="results-content" id="resultsContent" style="display:none">
+                        <!-- Pipeline Progress -->
+                        <div class="pipeline-progress" id="pipelineProgress">
+                            <div class="pipeline-step" data-step="vuln">
+                                <div class="step-indicator"></div>
+                                <span>Vulnerability Scan</span>
+                            </div>
+                            <div class="pipeline-connector"></div>
+                            <div class="pipeline-step" data-step="gas">
+                                <div class="step-indicator"></div>
+                                <span>Gas Analysis</span>
+                            </div>
+                            <div class="pipeline-connector"></div>
+                            <div class="pipeline-step" data-step="logic">
+                                <div class="step-indicator"></div>
+                                <span>Logic Audit</span>
+                            </div>
+                            <div class="pipeline-connector"></div>
+                            <div class="pipeline-step" data-step="report">
+                                <div class="step-indicator"></div>
+                                <span>Report</span>
+                            </div>
+                        </div>
+
+                        <!-- Results Tabs -->
+                        <div class="result-tabs">
+                            <button class="result-tab active" data-result="report">Report</button>
+                            <button class="result-tab" data-result="vulnerabilities">Vulnerabilities</button>
+                            <button class="result-tab" data-result="gas">Gas Optimization</button>
+                            <button class="result-tab" data-result="logic">Logic Audit</button>
+                            <button class="result-tab" data-result="raw">Raw Data</button>
+                        </div>
+
+                        <div class="result-content" id="resultReport"></div>
+                        <div class="result-content" id="resultVulnerabilities" style="display:none"></div>
+                        <div class="result-content" id="resultGas" style="display:none"></div>
+                        <div class="result-content" id="resultLogic" style="display:none"></div>
+                        <div class="result-content" id="resultRaw" style="display:none"></div>
+
+                        <!-- Token Usage Summary -->
+                        <div class="audit-summary" id="auditSummary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Batch Scan Tab -->
+    <section class="tab-content" id="tab-batch">
+        <div class="batch-container">
+            <div class="panel">
+                <h3 class="panel-title">📦 Batch Contract Scanner</h3>
+                <p class="panel-desc">Upload multiple contracts or paste them for parallel analysis. High-throughput mode for audit firms.</p>
+                <div class="batch-inputs" id="batchInputs">
+                    <div class="batch-item">
+                        <input type="text" class="text-input" placeholder="Contract 1 name">
+                        <textarea class="batch-code" placeholder="Paste contract 1 code..."></textarea>
+                    </div>
+                </div>
+                <div class="action-bar">
+                    <button class="btn btn-secondary" id="btnAddContract">+ Add Contract</button>
+                    <button class="btn btn-primary" id="btnBatchScan">
+                        <span class="btn-icon">⚡</span>
+                        Run Batch Scan
+                    </button>
+                </div>
+            </div>
+            <div class="panel" id="batchResults" style="display:none">
+                <h3 class="panel-title">📊 Batch Results</h3>
+                <div id="batchResultsContent"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Tab -->
+    <section class="tab-content" id="tab-chat">
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message ai">
+                    <div class="chat-avatar">🛡️</div>
+                    <div class="chat-bubble">
+                        <strong>ChainSentinel AI</strong><br>
+                        I'm your smart contract security expert. Ask me about Solidity vulnerabilities, DeFi attack vectors, gas optimization, or audit best practices. I use Xiaomi MiMo for deep analysis.
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <textarea id="chatInput" placeholder="Ask about smart contract security..." rows="2"></textarea>
+                <button class="btn btn-primary" id="btnSend">Send</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Initializing analysis pipeline...</div>
+            <div class="loading-agents" id="loadingAgents"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
