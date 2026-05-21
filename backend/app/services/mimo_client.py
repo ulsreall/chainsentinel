@@ -1,8 +1,8 @@
 """MiMo API Client — OpenAI-compatible interface for Xiaomi MiMo models."""
 
-import asyncio
 import time
-from typing import Optional, AsyncGenerator
+from collections.abc import AsyncGenerator
+
 from openai import AsyncOpenAI
 
 
@@ -23,7 +23,7 @@ class MiMoClient:
         messages: list[dict],
         temperature: float = 0.3,
         max_tokens: int = 4096,
-        system: Optional[str] = None,
+        system: str | None = None,
     ) -> dict:
         """Single chat completion with token tracking."""
         if system:
@@ -108,7 +108,7 @@ class MiMoClient:
     async def stream_chat(
         self,
         messages: list[dict],
-        system: Optional[str] = None,
+        system: str | None = None,
     ) -> AsyncGenerator[str, None]:
         """Stream chat completion."""
         if system:

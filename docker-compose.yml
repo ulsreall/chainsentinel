@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: ./backend
+    image: chainsentinel-api:dev
+    container_name: chainsentinel-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/data:/app/data
+    restart: unless-stopped
+
+  web:
+    image: nginx:alpine
+    container_name: chainsentinel-web
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+    restart: unless-stopped
