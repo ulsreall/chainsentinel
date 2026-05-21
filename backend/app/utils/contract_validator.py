@@ -47,7 +47,7 @@ def extract_contract_name(code: str) -> str:
 def estimate_token_usage(code: str) -> dict:
     """Estimate how many tokens an analysis will consume."""
     lines = code.split("\n")
-    loc = len([l for l in lines if l.strip()])
+    loc = len([ln for ln in lines if ln.strip()])
 
     # Rough estimation: ~1 token per 3 chars of code, plus agent overhead
     code_tokens = len(code) // 3

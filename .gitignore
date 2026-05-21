@@ -7,3 +7,9 @@ dist/
 build/
 token_usage.jsonl
 .venv/
+.pytest_cache/
+.ruff_cache/
+
+# Runtime data dir (token_usage.jsonl persistence)
+backend/data/
+data/
